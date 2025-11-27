@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>게시판 목록</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+    <div class="inner">
+        <a href="/" class="logo">My Board</a>
+        <div class="nav-links">
+            <% if (user) { %>
+                <% if (user.is_admin) { %>
+                    <a href="/admin" style="color: #ef4444; font-weight: bold; margin-right: 15px;">
+                        ⚙️ 관리자 설정
+                    </a>
+                <% } %>
+                <span><b><%= user.nickname %></b>님</span>
+                <a href="/auth/logout">로그아웃</a>
+            <% } else { %>
+                <a href="/auth/login">로그인</a>
+            <% } %>
+        </div>
+    </div>
+    </nav>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>📬 자유 게시판</h2>
+            <% if (user) { %>
+                <a href="/board/write" class="btn btn-primary">글쓰기</a>
+            <% } %>
+        </div>
+
+        <form action="/board" method="GET" style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <input type="text" name="search" placeholder="제목을 검색해보세요" value="<%= search %>" style="margin-bottom: 0;">
+            <button type="submit" class="btn btn-outline">검색</button>
+        </form>
+
+        <table class="board-table">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>타입</th>     
+                    <th>카테고리</th> 
+                    <th>제목</th>
+                    </tr>
+            </thead>
+            <tbody>
+                <% if (posts.length === 0) { %>
+                    <tr><td colspan="6" style="text-align: center;">게시물이 없습니다.</td></tr>
+                <% } %>
+                
+                <% posts.forEach(post => { %>
+                <tr class="<%= post.type === 'notice' ? 'notice-row' : '' %>">
+                    <td><%= post.id %></td>
+                    <td>
+                        <% if (post.type === 'notice') { %>
+                            <span class="notice-badge">공지</span>
+                        <% } else { %>
+                            <span style="color:#6b7280">자유</span>
+                        <% } %>
+                    </td>
+                    <td>
+                        <a href="/board/view/<%= post.id %>" style="font-weight: 500;">
+                            <%= post.title %>
+                        </a>
+                    </td>
+                    <td><%= post.nickname %></td>
+                    <td><%= post.views %></td>
+                    <td><%= new Date(post.created_at).toLocaleDateString() %></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <% for(let i=1; i <= totalPages; i++) { %>
+                <a href="/board?page=<%= i %>&search=<%= search %>" class="<%= currentPage == i ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>커뮤니티 홈</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .hero h1 { font-size: 2.5rem; color: #1e3a8a; margin-bottom: 1rem; }
+        .hero p { font-size: 1.1rem; color: #4b5563; margin-bottom: 2rem; }
+        .welcome-box { 
+            background: white; padding: 2rem; border-radius: 8px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); text-align: center; 
+            max-width: 600px; margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+    <div class="inner">
+        <a href="/" class="logo">My Board</a>
+        <div class="nav-links">
+            <% if (user) { %>
+                <% if (user.is_admin) { %>
+                    <a href="/admin" style="color: #ef4444; font-weight: bold; margin-right: 15px;">
+                        ⚙️ 관리자 설정
+                    </a>
+                <% } %>
+                <span><b><%= user.nickname %></b>님</span>
+                <a href="/auth/logout">로그아웃</a>
+            <% } else { %>
+                <a href="/auth/login">로그인</a>
+                <a href="/auth/register" class="btn btn-primary" style="color: white; margin-left: 10px;">회원가입</a>
+            <% } %>
+        </div>
+    </div>
+</nav>
+    </nav>
+
+    <div class="container" style="background-color: transparent; box-shadow: none;">
+        <div class="hero">
+            <h1>환영합니다!</h1>
+            <p>자유롭게 소통하고 정보를 공유하는 공간입니다.<br>지금 바로 이야기를 시작해보세요.</p>
+            
+            <div class="welcome-box">
+                <% if (user) { %>
+                    <h3 style="margin-bottom: 10px;">반갑습니다, <span style="color: var(--primary-color);"><%= user.nickname %></span>님!</h3>
+                    <p style="margin-bottom: 20px; color: #6b7280;">
+                        현재 권한: 
+                        <% if(user.is_admin) { %>
+                            <span style="background: #ef4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">관리자(Admin)</span>
+                        <% } else { %>
+                            <span style="background: #3b82f6; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">일반 회원</span>
+                        <% } %>
+                    </p>
+                    <a href="/board" class="btn btn-primary" style="font-size: 1.1rem; padding: 0.8rem 2rem;">게시판 입장하기</a>
+                <% } else { %>
+                    <h3>로그인이 필요합니다</h3>
+                    <p style="margin-bottom: 20px; color: #6b7280;">게시글을 작성하려면 로그인을 해주세요.</p>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <a href="/auth/login" class="btn btn-primary">로그인</a>
+                        <a href="/auth/register" class="btn btn-outline">회원가입</a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

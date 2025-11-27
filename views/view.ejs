@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= post.title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="inner">
+            <a href="/board" class="logo">My Board</a>
+            <div class="nav-links">
+                <a href="/board">목록으로</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem; margin-bottom: 2rem;">
+            <span style="color: var(--primary-color); font-weight: bold;">
+                <%= post.type === 'notice' ? '[공지사항]' : '[자유게시판]' %>
+            </span>
+            <h1 style="margin: 10px 0;"><%= post.title %></h1>
+            <div style="color: #6b7280; font-size: 0.9rem;">
+                <span>작성자: <b><%= post.nickname %></b></span> | 
+                <span>조회수: <%= post.views %></span> | 
+                <span><%= new Date(post.created_at).toLocaleString() %></span>
+            </div>
+        </div>
+
+        <div style="min-height: 300px; font-size: 1.1rem; line-height: 1.8;">
+            <%- post.content.replace(/\n/g, '<br>') %>
+        </div>
+
+        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #e5e7eb;">
+
+        <div style="display: flex; gap: 10px;">
+            <a href="/board" class="btn btn-outline">목록</a>
+            
+            <% if (user && (user.id === post.user_id || user.is_admin)) { %>
+                <div style="margin-left: auto; display: flex; gap: 10px;">
+                    <% if (user.id === post.user_id) { %>
+                        <a href="/board/edit/<%= post.id %>" class="btn btn-primary">수정</a>
+                    <% } %>
+                    <button onclick="if(confirm('삭제하시겠습니까?')) location.href='/board/delete/<%= post.id %>'" class="btn btn-danger">삭제</button>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

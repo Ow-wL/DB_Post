@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>로그인</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .auth-box { width: 400px; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="auth-box">
+        <h2 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">로그인</h2>
+        <form action="/auth/login" method="POST">
+            <input type="text" name="username" placeholder="아이디" required>
+            <input type="password" name="password" placeholder="비밀번호" required>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">로그인</button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem; color: #666;">
+            계정이 없으신가요? <a href="/auth/register" style="color: var(--primary-color); font-weight: bold;">회원가입</a>
+        </p>
+        <p style="text-align: center; margin-top: 0.5rem;">
+            <a href="/" style="font-size: 0.9rem; color: #999;">홈으로 돌아가기</a>
+        </p>
+    </div>
+</body>
+</html>

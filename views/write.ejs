@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= post ? '글 수정' : '새 글 작성' %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .write-form input[type="text"] { font-size: 1.2rem; padding: 1rem; font-weight: bold; }
+        .write-form textarea { height: 400px; resize: vertical; font-size: 1rem; line-height: 1.6; }
+        .option-group { margin-bottom: 1rem; padding: 10px; background: #f9fafb; border-radius: 6px; border: 1px solid #e5e7eb; display: inline-block;}
+        .option-group label { margin-right: 15px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="inner">
+            <a href="/board" class="logo">My Board</a>
+            <div class="nav-links">
+                <a href="/board">목록으로</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 style="margin-bottom: 1.5rem; border-left: 5px solid var(--primary-color); padding-left: 10px;">
+            <%= post ? '글 수정하기' : '새 글 작성' %>
+        </h2>
+        
+        <form action="<%= post ? '/board/edit/' + post.id : '/board/write' %>" method="POST" class="write-form">
+            
+            <% if (user.is_admin && !post) { %>
+                <div class="option-group">
+                    <span style="font-weight: bold; margin-right: 10px; color: #4b5563;">게시판 선택:</span>
+                    <label><input type="radio" name="type" value="free" checked> 자유게시판</label>
+                    <label><input type="radio" name="type" value="notice"> 📢 공지사항</label>
+                </div>
+            <% } else if (!post) { %>
+                <input type="hidden" name="type" value="free">
+            <% } %>
+            <div style="margin-bottom: 1rem;">
+                <select name="category" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+                    <option value="일상" <%= (post && post.category === '일상') ? 'selected' : '' %>>일상</option>
+                    <option value="질문" <%= (post && post.category === '질문') ? 'selected' : '' %>>질문</option>
+                    <option value="정보" <%= (post && post.category === '정보') ? 'selected' : '' %>>정보</option>
+                    <option value="후기" <%= (post && post.category === '후기') ? 'selected' : '' %>>후기</option>
+                </select>
+            </div>  
+
+            <input type="text" name="title" placeholder="제목을 입력하세요" value="<%= post ? post.title : '' %>" required>
+            
+            <textarea name="content" placeholder="내용을 자유롭게 작성해주세요." required><%= post ? post.content : '' %></textarea>
+            
+            <div style="margin-top: 1rem; display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" onclick="history.back()" class="btn btn-outline">취소</button>
+                <button type="submit" class="btn btn-primary"><%= post ? '수정 완료' : '글 등록' %></button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
